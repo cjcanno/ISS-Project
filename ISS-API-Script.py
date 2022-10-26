@@ -1,10 +1,11 @@
-import urllib2
+import urllib3
 import json
 
-req = urllib2.Request("http://api.open-notify.org/iss-now.json")
-response = urllib2.urlopen(req)
+http = urllib3.PoolManager() #Required for urllib3 to open URLS
 
-obj = json.loads(response.read())
+req = http.request('GET', "http://api.open-notify.org/iss-now.json")
 
-print('timestamp')
-print('iss_position','latitude','data','iss_position','latitude')
+data = json.loads(req.data.decode('utf-8')) #Takes the data from urllib3 and loads into json
+
+for key, value in data.items(): #goes over each KVP and prints
+    print(key, value, sep=':')
